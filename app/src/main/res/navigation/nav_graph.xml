@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/BicycleRentalFragment">
+
+    <fragment
+        android:id="@+id/BicycleRentalFragment"
+        android:name="com.example.bicycleapp.fragment.BicycleRentalFragment"
+        android:label="@string/bicycle_rental_fragment_label"
+        tools:layout="@layout/fragment_bicycle_rental">
+
+
+        <action
+            android:id="@+id/action_BicycleRentalFragment_to_BasketFragment"
+            app:destination="@id/BasketFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/BasketFragment"
+        android:name="com.example.bicycleapp.fragment.BasketFragment"
+        android:label="@string/basket_fragment_label"
+        tools:layout="@layout/fragment_basket">
+
+        <action
+            android:id="@+id/action_BasketFragment_to_BicycleRentalFragment"
+            app:destination="@id/BicycleRentalFragment" />
+    </fragment>
+</navigation>
