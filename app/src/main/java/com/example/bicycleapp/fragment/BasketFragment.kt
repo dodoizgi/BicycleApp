@@ -11,7 +11,6 @@ import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BasketBicycleListAdapter
 import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.FragmentBasketBinding
-import com.example.bicycleapp.model.Bike
 
 class BasketFragment : Fragment() {
 
@@ -35,13 +34,20 @@ class BasketFragment : Fragment() {
         val recyclerView = binding.basketRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        val adapter =
+        var adapter =
             BasketBicycleListAdapter(sharedPreference.getBasket("ORDER"))
 
         recyclerView.adapter= adapter
 
         binding.closeImage.setOnClickListener {
             findNavController().navigate(R.id.action_BasketFragment_to_BicycleRentalFragment)
+        }
+
+        binding.deleteButton.setOnClickListener {
+            sharedPreference.clearBasket()
+            adapter =
+                BasketBicycleListAdapter(sharedPreference.getBasket("ORDER"))
+            recyclerView.adapter= adapter
         }
     }
 

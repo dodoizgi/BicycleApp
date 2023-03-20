@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BicycleListAdapter
+import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.FragmentBicycleRentalBinding
 import com.example.bicycleapp.model.Bike
 
@@ -37,6 +39,12 @@ class BicycleRentalFragment : Fragment() {
             BicycleListAdapter(createActressList())
 
         recyclerView.adapter= adapter
+
+        binding.basketButton.setOnClickListener {
+            val sharedPreference = SharedPreference(view.context)
+            sharedPreference.getBasket("ORDER")
+            Navigation.findNavController(view).navigate(R.id.action_BicycleRentalFragment_to_BasketFragment)
+        }
     }
 
     override fun onDestroyView() {

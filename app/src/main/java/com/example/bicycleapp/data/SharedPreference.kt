@@ -15,8 +15,15 @@ class SharedPreference(context : Context) {
 
 
     fun addBasket(KEY_NAME: String, bike: Bike) {
-        bikeArray = getBasket("ORDER")
+        if (getBasket("ORDER")?.isEmpty() == false) {
+            bikeArray = getBasket("ORDER")!!
+        }
+
         bikeArray.add(bike)
+
+        if (bikeArray.isEmpty())
+            return
+
         val editor: SharedPreferences.Editor = sharedPref.edit()
         val gson = Gson()
         val json: String = gson.toJson(bikeArray)
@@ -24,22 +31,18 @@ class SharedPreference(context : Context) {
         editor.apply()
     }
 
-    fun getBasket(key: String): ArrayList<Bike> {
+    fun getBasket(key: String): ArrayList<Bike>? {
         val gson = Gson()
         val json: String? = sharedPref.getString(key, null)
         val type: Type = object : TypeToken<ArrayList<Bike>>() {}.type
-        val bikes : ArrayList<Bike> = gson.fromJson(json, type)
+        val bikes : ArrayList<Bike>? = gson.fromJson(json, type)
 
         return bikes
     }
 
-   fun getValueString(KEY_NAME: String): String? {
-        return sharedPref.getString(KEY_NAME, null)
-    }
-
-    fun clearSharedPreference() {
+    fun clearBasket() {
         val editor: SharedPreferences.Editor = sharedPref.edit()
-        editor.clear()
+        editor.remove("ORDER")
         editor.apply()
     }
 }
