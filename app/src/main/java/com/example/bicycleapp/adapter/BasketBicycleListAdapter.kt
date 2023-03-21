@@ -3,10 +3,12 @@ package com.example.bicycleapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bicycleapp.Interface.BasketUpdate
+import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.BasketItemBinding
-import com.example.bicycleapp.model.Bike
+import com.example.bicycleapp.model.BikeBasketModel
 
-class BasketBicycleListAdapter(private val bikeList: ArrayList<Bike>?):
+class BasketBicycleListAdapter(private val bikeBasketList: ArrayList<BikeBasketModel>? , private val basketUpdate: BasketUpdate):
     RecyclerView.Adapter<BasketBicycleListAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: BasketItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -16,20 +18,25 @@ class BasketBicycleListAdapter(private val bikeList: ArrayList<Bike>?):
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val bike = bikeList?.get(position)
+        val bikeBasket = bikeBasketList?.get(position)
         with(viewHolder.binding) {
-            basketBikeName.text = bike?.bikeName ?: ""
-            basketBikePrice.text = bike?.bikePrice ?: ""
-            basketBikeImage.setImageResource(bike?.bikeImage ?: 0)
+            basketBikeName.text = bikeBasket?.bikeName ?: ""
+            basketBikePrice.text = bikeBasket?.bikePrice ?: ""
+            basketBikeImage.setImageResource(bikeBasket?.bikeImage ?: 0)
+            basketPieceText.text = bikeBasket?.bikeCount.toString()
+
+            basketIncreaseButton.setOnClickListener {
+                val sharedPreference = SharedPreference(it.context)
+                if (bikeBasket != null) {sharedPreference.addItemBasket("ORDER",bikeBasket) }
+                basketUpdate.update()
+            }
+            basketDecreaseButton.setOnClickListener {
+                val sharedPreference = SharedPreference(it.context)
+                if (bikeBasket != null) {sharedPreference.removeItembasket("ORDER",bikeBasket) }
+                basketUpdate.update()
+            }
         }
     }
 
-    override fun getItemCount() = bikeList?.size ?: 0
-
-    companion object {
-        @Suppress("NotifyDataSetChanged")
-        fun method(basketBicycleListAdapter: BasketBicycleListAdapter) {
-            basketBicycleListAdapter.notifyDataSetChanged()
-        }
-    }
+    override fun getItemCount() = bikeBasketList?.size ?: 0
 }

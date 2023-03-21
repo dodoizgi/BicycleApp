@@ -9,12 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bicycleapp.Interface.BasketUpdate
 import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BasketBicycleListAdapter
 import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.FragmentBasketBinding
 
-class BasketFragment : Fragment() {
+class BasketFragment : Fragment() , BasketUpdate{
 
     private var _binding: FragmentBasketBinding? = null
     private val binding get() = _binding!!
@@ -22,14 +23,9 @@ class BasketFragment : Fragment() {
     private lateinit var adapter : BasketBicycleListAdapter
     private lateinit var recyclerView : RecyclerView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
         _binding = FragmentBasketBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,7 +36,7 @@ class BasketFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         adapter =
-            BasketBicycleListAdapter(sharedPreference!!.getBasket("ORDER"))
+            BasketBicycleListAdapter(sharedPreference!!.getBasket("ORDER"),this)
 
         recyclerView.adapter= adapter
 
@@ -66,14 +62,19 @@ class BasketFragment : Fragment() {
 
     private fun deleteBasket() {
         sharedPreference?.clearBasket()
-        adapter =
-            BasketBicycleListAdapter(sharedPreference?.getBasket("ORDER"))
+        adapter =BasketBicycleListAdapter(sharedPreference?.getBasket("ORDER"),this)
         recyclerView.adapter= adapter
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun update() {
+        adapter =
+            BasketBicycleListAdapter(sharedPreference!!.getBasket("ORDER"),this)
+
+        recyclerView.adapter= adapter
     }
 }

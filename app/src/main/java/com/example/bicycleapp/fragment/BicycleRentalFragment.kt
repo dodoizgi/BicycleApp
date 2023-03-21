@@ -54,62 +54,62 @@ class BicycleRentalFragment : Fragment() {
 
     private fun createActressList(): ArrayList<Bike> {
         return arrayListOf<Bike>(
-            Bike(
+            Bike(1,
                 "Bianchi",
                 R.drawable.bicycle_image,
                 "15tl"
             ),
-            Bike(
+            Bike(2,
                 "Ümit",
                 R.drawable.bike_1,
                 "20tl"
             ),
-            Bike(
+            Bike(3,
                 "Serraro ",
                 R.drawable.bike_2,
                 "29tl"
             ),
-            Bike(
+            Bike(4,
                 "Cannondale",
                 R.drawable.bike_3,
                 "19tl"
             ),
-            Bike(
+            Bike(5,
                 "Tec",
                 R.drawable.bike_4,
                 "20tl"
             ),
-            Bike(
+            Bike(6,
                 "Belderia",
                 R.drawable.bike_5,
                 "10tl"
             ),
-            Bike(
+            Bike(1,
                 "Bianchi",
                 R.drawable.bike_6,
                 "18tl"
             ),
-            Bike(
+            Bike(2,
                 "Ümit",
                 R.drawable.bike_5,
                 "20tl"
             ),
-            Bike(
+            Bike(3,
                 "Serraro ",
                 R.drawable.bike_2,
                 "23tl"
             ),
-            Bike(
+            Bike(4,
                 "Cannondale",
                 R.drawable.bike_1,
                 "22tl"
             ),
-            Bike(
+            Bike(5,
                 "Tec",
                 R.drawable.bicycle_image,
                 "25tl"
             ),
-            Bike(
+            Bike(6,
                 "Belderia",
                 R.drawable.bike_3,
                 "10tl"
