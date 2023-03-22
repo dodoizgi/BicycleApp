@@ -10,8 +10,10 @@
         android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bicycle_image_cardView"
@@ -38,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="@string/bianchi"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bicycle_image_cardView" />
@@ -48,10 +50,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="15 tl"
+            android:textSize="18sp"
+            android:text="15"
             app:layout_constraintEnd_toEndOf="@+id/bicycle_name"
             app:layout_constraintStart_toStartOf="@+id/bicycle_name"
             app:layout_constraintTop_toBottomOf="@+id/bicycle_name" />
+
+        <TextView
+            android:id="@+id/bicycle_price_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="₺"
+            app:layout_constraintBottom_toBottomOf="@+id/bicycle_price"
+            app:layout_constraintStart_toEndOf="@+id/bicycle_price"
+            app:layout_constraintTop_toTopOf="@+id/bicycle_price" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/plus_button_cardView"

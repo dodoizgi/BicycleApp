@@ -8,8 +8,8 @@ import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.BasketItemBinding
 import com.example.bicycleapp.model.BikeBasketModel
 
-class BasketBicycleListAdapter(private val bikeBasketList: ArrayList<BikeBasketModel>? , private val basketUpdate: BasketUpdate):
-    RecyclerView.Adapter<BasketBicycleListAdapter.ViewHolder>() {
+class BasketBikeListAdapter(private val bikeBasketList: ArrayList<BikeBasketModel>?, private val basketUpdate: BasketUpdate):
+    RecyclerView.Adapter<BasketBikeListAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: BasketItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -21,7 +21,7 @@ class BasketBicycleListAdapter(private val bikeBasketList: ArrayList<BikeBasketM
         val bikeBasket = bikeBasketList?.get(position)
         with(viewHolder.binding) {
             basketBikeName.text = bikeBasket?.bikeName ?: ""
-            basketBikePrice.text = bikeBasket?.bikePrice ?: ""
+            basketBikePrice.text = bikeBasket?.bikePrice.toString()
             basketBikeImage.setImageResource(bikeBasket?.bikeImage ?: 0)
             basketPieceText.text = bikeBasket?.bikeCount.toString()
 

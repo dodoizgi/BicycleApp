@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/BicycleRentalFragment"
-        android:name="com.example.bicycleapp.fragment.BicycleRentalFragment"
+        android:name="com.example.bicycleapp.fragment.BikeRentFragment"
         android:label="@string/bicycle_rental_fragment_label"
         tools:layout="@layout/fragment_bicycle_rental">
 

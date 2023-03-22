@@ -20,6 +20,18 @@ class SharedPreference(context : Context) {
         return gson.fromJson(json, type)
     }
 
+    fun getSize(key: String) : Int { return getBasket(key)?.size ?: 0 }
+
+    fun getTotalFee(key: String) : String {
+        var totalCount = 0
+        if (getBasket(key)?.isEmpty() == false) { bikeBasketArray = getBasket("ORDER")!! }
+        if (bikeBasketArray.isEmpty())
+            return "0"
+
+        bikeBasketArray.forEach { totalCount += it.bikePrice * it.bikeCount }
+        return totalCount.toString()
+    }
+
     fun addItemBasket(KEY_NAME: String, bikeBasket: BikeBasketModel) {
         if (getBasket("ORDER")?.isEmpty() == false) { bikeBasketArray = getBasket("ORDER")!! }
         checkAndAdd(bikeBasket)

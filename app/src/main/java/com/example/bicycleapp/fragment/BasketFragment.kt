@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bicycleapp.Interface.BasketUpdate
 import com.example.bicycleapp.R
-import com.example.bicycleapp.adapter.BasketBicycleListAdapter
+import com.example.bicycleapp.adapter.BasketBikeListAdapter
 import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.FragmentBasketBinding
 
-class BasketFragment : Fragment() , BasketUpdate{
+class BasketFragment : Fragment() ,BasketUpdate {
 
     private var _binding: FragmentBasketBinding? = null
     private val binding get() = _binding!!
     private var sharedPreference : SharedPreference? = null
-    private lateinit var adapter : BasketBicycleListAdapter
+    private lateinit var adapter : BasketBikeListAdapter
     private lateinit var recyclerView : RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
@@ -36,10 +36,11 @@ class BasketFragment : Fragment() , BasketUpdate{
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         adapter =
-            BasketBicycleListAdapter(sharedPreference!!.getBasket("ORDER"),this)
+            BasketBikeListAdapter(sharedPreference!!.getBasket("ORDER"),this)
 
         recyclerView.adapter= adapter
 
+        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER")
         binding.closeImage.setOnClickListener {
             findNavController().navigate(R.id.action_BasketFragment_to_BicycleRentalFragment)
         }
@@ -62,7 +63,8 @@ class BasketFragment : Fragment() , BasketUpdate{
 
     private fun deleteBasket() {
         sharedPreference?.clearBasket()
-        adapter =BasketBicycleListAdapter(sharedPreference?.getBasket("ORDER"),this)
+        binding.basketTotalFee.text = "0"
+        adapter =BasketBikeListAdapter(sharedPreference?.getBasket("ORDER"),this)
         recyclerView.adapter= adapter
     }
 
@@ -73,8 +75,9 @@ class BasketFragment : Fragment() , BasketUpdate{
 
     override fun update() {
         adapter =
-            BasketBicycleListAdapter(sharedPreference!!.getBasket("ORDER"),this)
+            BasketBikeListAdapter(sharedPreference!!.getBasket("ORDER"),this)
 
+        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER")
         recyclerView.adapter= adapter
     }
 }
