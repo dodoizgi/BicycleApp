@@ -68,11 +68,6 @@ class BasketFragment : Fragment() ,BasketUpdate {
         recyclerView.adapter= adapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun update() {
         adapter =
             BasketBikeListAdapter(sharedPreference!!.getBasket("ORDER"),this)

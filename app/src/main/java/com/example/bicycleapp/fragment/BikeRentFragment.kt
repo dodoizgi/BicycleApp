@@ -40,9 +40,9 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         recyclerView.adapter= adapter
         sharedPreference = SharedPreference(view.context)
 
-        binding.basketSizeText.text = sharedPreference.getSize("ORDER").toString()
+        binding.basketFee.text = sharedPreference.getTotalFee("ORDER")
 
-        binding.basketButton.setOnClickListener {
+        binding.basketLayout.setOnClickListener {
             sharedPreference.getBasket("ORDER")
             Navigation.findNavController(view).navigate(R.id.action_BicycleRentalFragment_to_BasketFragment)
         }
@@ -88,7 +88,18 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         )
     }
 
+
+    private fun showBasket() {
+        binding.basketLayout.visibility = View.VISIBLE
+    }
+
     override fun update() {
-        binding.basketSizeText.text = sharedPreference.getSize("ORDER").toString()
+        if (binding.basketLayout.visibility == View.GONE)
+            showBasket()
+
+        binding.basketFee.text = buildString {
+        append(sharedPreference.getTotalFee("ORDER"))
+        append("₺")
+    }
     }
 }
