@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,6 +34,11 @@ class BikeRentFragment : Fragment() , BasketUpdate {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            // Handle the back button event
+        }
+        callback.isEnabled = true
 
         recyclerView = binding.bikeRecyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 3)
@@ -100,6 +106,6 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         binding.basketFee.text = buildString {
         append(sharedPreference.getTotalFee("ORDER"))
         append("₺")
-    }
+        }
     }
 }
