@@ -9,7 +9,6 @@ import android.view.*
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -17,8 +16,10 @@ import com.example.bicycleapp.R
 import com.example.bicycleapp.R.drawable.switch_trcks
 import com.example.bicycleapp.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+
 
 class LoginFragment : Fragment() {
 
@@ -27,13 +28,14 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: LoginViewModel
     private lateinit var dialog : AlertDialog
+    private var user : FirebaseUser? = null
 
 
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
         if(currentUser != null){
-           Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_BicycleRentalFragment)
+          //Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_BicycleRentalFragment)
         }
     }
 
@@ -44,15 +46,23 @@ class LoginFragment : Fragment() {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Initialize Firebase Auth
+
         auth = Firebase.auth
         dialog = "Loading..".setProgressDialog(requireContext())
+        viewModel = LoginViewModel(requireActivity().application)
+        viewModel.getUserData()!!.observe(requireActivity()) { firebaseUser ->
+            if (firebaseUser != null) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_BicycleRentalFragment)
+                onDestroy()
+            }
+        }
 
         with(binding) {
             signUp.setOnClickListener {
@@ -73,33 +83,15 @@ class LoginFragment : Fragment() {
             }
 
             logInButton.setOnClickListener {
-                auth.signInWithEmailAndPassword(binding.eMail.text.toString(), binding.passwords.text.toString()).addOnCompleteListener { task ->
-                    dialog.show()
-                    if (task.isSuccessful) {
-
-                    } else {
-
-                    }
-                }
+                dialog.show()
+                viewModel.signIn(binding.eMail.text.toString(), binding.passwords.text.toString())
             }
 
             RegisterButton.setOnClickListener{
                 dialog.show()
-                auth.createUserWithEmailAndPassword(binding.eMails.text.toString(), binding.passwordss.text.toString()).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_BicycleRentalFragment)
-                        onDestroy()
-                    } else {
-                        Toast.makeText(context, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
-                    }
-                }
+                viewModel.register(binding.eMails.text.toString(), binding.passwordss.text.toString())
             }
         }
-
-        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
-        // TODO: Use the ViewModel
     }
 
     private fun String.setProgressDialog(context: Context): AlertDialog {
