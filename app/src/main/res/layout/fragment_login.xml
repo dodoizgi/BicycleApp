@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/singUp"
+                    android:id="@+id/signUp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -64,7 +64,7 @@
                     android:paddingBottom="5dp"
                     android:text="Sing Up"
                     android:textAlignment="center"
-                    android:textColor="#A1887F"
+                    android:textColor="@color/gray_700"
                     android:textSize="16sp"
                     android:textStyle="bold|normal" />
 
@@ -94,15 +94,15 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:inputType="textPersonName|textEmailAddress"
                         android:id="@+id/eMail"
-                        android:ems="10"
-                        android:textSize="13sp"
-                        android:textColor="@color/black"
-                        android:textStyle="normal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        />
+                        android:ems="10"
+                        android:inputType="textPersonName|textEmailAddress"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="normal"
+                        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:hint="Password"
@@ -119,15 +119,15 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:inputType="textPassword"
                         android:id="@+id/passwords"
-                        android:ems="10"
-                        android:textSize="13sp"
-                        android:textColor="@color/black"
-                        android:textStyle="normal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        />
+                        android:ems="10"
+                        android:inputType="textPassword"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:textStyle="normal"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <TextView
                     android:textSize="11sp"
@@ -135,6 +135,22 @@
                     android:textAlignment="textEnd"
                     android:textColor="#616161"
                     android:textStyle="normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/logInButton"
+                    android:text="Log in"
+                    android:textSize="17sp"
+                    android:textAllCaps="false"
+                    android:elevation="15dp"
+                    android:gravity="center"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:textColor="@color/text"
+                    android:layout_gravity="center"
+                    app:shapeAppearanceOverlay="@style/Button5"
+                    app:backgroundTint="@color/gray_700"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -225,23 +241,22 @@
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <Button
+                    android:id="@+id/RegisterButton"
+                    android:text="Create Account"
+                    android:textSize="17sp"
+                    android:textAllCaps="false"
+                    android:elevation="15dp"
+                    android:gravity="center"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:textColor="@color/text"
+                    android:layout_gravity="center"
+                    app:shapeAppearanceOverlay="@style/Button5"
+                    app:backgroundTint="@color/gray_700"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/signIn"
-                android:text="Log in"
-                android:textSize="17sp"
-                android:textAllCaps="false"
-                android:elevation="15dp"
-                android:gravity="center"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:textColor="@color/text"
-                android:layout_gravity="center"
-                app:shapeAppearanceOverlay="@style/Button5"
-                app:backgroundTint="@color/gray_700"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
 
             <TextView
                 android:text="OR"
@@ -279,14 +294,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"/>
 
-
             </LinearLayout>
-
-
         </LinearLayout>
-
-
-
     </com.google.android.material.card.MaterialCardView>
-
 </LinearLayout>

@@ -46,7 +46,7 @@ class BasketFragment : Fragment() ,BasketUpdate {
 
         recyclerView.adapter= adapter
 
-        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER")
+        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER").toString()
         binding.closeImage.setOnClickListener {
             findNavController().navigate(R.id.action_BasketFragment_to_BicycleRentalFragment)
         }
@@ -78,7 +78,7 @@ class BasketFragment : Fragment() ,BasketUpdate {
         adapter =
             BasketBikeListAdapter(sharedPreference!!.getBasket("ORDER"),this)
 
-        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER")
+        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER").toString()
         recyclerView.adapter= adapter
     }
 }

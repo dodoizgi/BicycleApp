@@ -34,19 +34,21 @@ class BikeRentFragment : Fragment() , BasketUpdate {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             // Handle the back button event
         }
         callback.isEnabled = true
 
+        sharedPreference = SharedPreference(view.context)
         recyclerView = binding.bikeRecyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         adapter = BikeListAdapter(createActressList(),this)
         recyclerView.adapter= adapter
-        sharedPreference = SharedPreference(view.context)
 
-        binding.basketFee.text = sharedPreference.getTotalFee("ORDER")
+        if (sharedPreference.getTotalFee("ORDER") >= 1)
+            showBasket()
+
+        binding.basketFee.text = sharedPreference.getTotalFee("ORDER").toString()
 
         binding.basketLayout.setOnClickListener {
             sharedPreference.getBasket("ORDER")
