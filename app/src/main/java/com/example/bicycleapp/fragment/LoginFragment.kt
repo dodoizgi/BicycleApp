@@ -9,14 +9,13 @@ import android.view.*
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.bicycleapp.R
 import com.example.bicycleapp.R.drawable.switch_trcks
 import com.example.bicycleapp.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -28,16 +27,6 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: LoginViewModel
     private lateinit var dialog : AlertDialog
-    private var user : FirebaseUser? = null
-
-
-    override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        if(currentUser != null){
-          //Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_BicycleRentalFragment)
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -65,21 +54,12 @@ class LoginFragment : Fragment() {
         }
 
         with(binding) {
+
             signUp.setOnClickListener {
-                signUp.background = resources.getDrawable(switch_trcks,null)
-                signUp.setTextColor(resources.getColor(R.color.text,null))
-                logIn.background = null
-                singUpLayout.visibility = View.VISIBLE
-                logInLayout.visibility = View.GONE
-                logIn.setTextColor(resources.getColor(R.color.gray_700,null))
+                showSignUp()
             }
             logIn.setOnClickListener {
-                signUp.background = null
-                signUp.setTextColor(resources.getColor(R.color.gray_700,null))
-                logIn.background = resources.getDrawable(switch_trcks,null)
-                singUpLayout.visibility = View.GONE
-                logInLayout.visibility = View.VISIBLE
-                logIn.setTextColor(resources.getColor(R.color.text,null))
+                showLogIn()
             }
 
             logInButton.setOnClickListener {
@@ -91,6 +71,28 @@ class LoginFragment : Fragment() {
                 dialog.show()
                 viewModel.register(binding.eMails.text.toString(), binding.passwordss.text.toString())
             }
+        }
+    }
+
+    private fun showSignUp() {
+        with(binding) {
+            signUp.background = ResourcesCompat.getDrawable(resources, switch_trcks,null)
+            signUp.setTextColor(resources.getColor(R.color.text, null))
+            logIn.background = null
+            singUpLayout.visibility = View.VISIBLE
+            logInLayout.visibility = View.GONE
+            logIn.setTextColor(resources.getColor(R.color.gray_700, null))
+        }
+    }
+
+    private fun showLogIn() {
+        with(binding) {
+            signUp.background = null
+            signUp.setTextColor(resources.getColor(R.color.gray_700, null))
+            logIn.background = ResourcesCompat.getDrawable(resources, switch_trcks,null)
+            singUpLayout.visibility = View.GONE
+            logInLayout.visibility = View.VISIBLE
+            logIn.setTextColor(resources.getColor(R.color.text, null))
         }
     }
 

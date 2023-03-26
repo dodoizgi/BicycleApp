@@ -11,19 +11,15 @@ class AuthenticationRepository(private var application: Application) {
     private var userLoggedMutableLiveData: MutableLiveData<Boolean?> = MutableLiveData()
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    fun getFirebaseUserMutableLiveData(): MutableLiveData<FirebaseUser?>? {
+    init {if (auth.currentUser != null)  firebaseUserMutableLiveData.postValue(auth.currentUser) }
+
+    fun getFirebaseUserMutableLiveData(): MutableLiveData<FirebaseUser?> {
         return firebaseUserMutableLiveData
     }
 
-    fun getUserLoggedMutableLiveData(): MutableLiveData<Boolean?>? {
+    fun getUserLoggedMutableLiveData(): MutableLiveData<Boolean?> {
         return userLoggedMutableLiveData
     }
-
-    /*init {
-        if (auth.currentUser != null) {
-            firebaseUserMutableLiveData.postValue(auth.currentUser)
-        }
-    }*/
 
     fun register(email: String?, pass: String?) {
         auth.createUserWithEmailAndPassword(email!!, pass!!).addOnCompleteListener { task ->

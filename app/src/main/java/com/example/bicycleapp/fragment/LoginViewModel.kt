@@ -11,14 +11,10 @@ class LoginViewModel(application: Application) : ViewModel() {
 
     private var repository: AuthenticationRepository = AuthenticationRepository(application)
     private var userData: MutableLiveData<FirebaseUser?>?  = repository.getFirebaseUserMutableLiveData()
-    private var loggedStatus: MutableLiveData<Boolean?>? = repository.getUserLoggedMutableLiveData()
+    //private var loggedStatus: MutableLiveData<Boolean?>? = repository.getUserLoggedMutableLiveData()
 
     fun getUserData(): MutableLiveData<FirebaseUser?>? {
         return userData
-    }
-
-    fun getLoggedStatus(): MutableLiveData<Boolean?>? {
-        return loggedStatus
     }
 
     fun register(email: String?, pass: String?) {
@@ -29,8 +25,14 @@ class LoginViewModel(application: Application) : ViewModel() {
         repository.login(email, pass)
     }
 
+    /*
     fun signOut() {
         repository.signOut()
     }
+
+    fun getLoggedStatus(): MutableLiveData<Boolean?>? {
+        return loggedStatus
+    }
+    */
 }
 
