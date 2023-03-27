@@ -25,7 +25,8 @@ Using Tools And Components Supported By Google And By Most Of The Android Develo
 
 **DOĞUŞ İZGİ**
 
-[![Linkedin](https://img.shields.io/badge/-linkedin-blue?logo=linkedin)]https://www.linkedin.com/in/doğuş-izgi-396554185/)
+[![Linkedin](https://img.shields.io/badge/-linkedin-blue?logo=linkedin)](https://www.linkedin.com/in/doğuş-izgi-396554185/)
+
 
 📄 License 
 -------
