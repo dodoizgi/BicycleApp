@@ -15,6 +15,7 @@ import androidx.navigation.Navigation
 import com.example.bicycleapp.R
 import com.example.bicycleapp.R.drawable.switch_trcks
 import com.example.bicycleapp.databinding.FragmentLoginBinding
+import com.example.bicycleapp.viewodel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

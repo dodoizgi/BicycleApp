@@ -14,7 +14,10 @@ import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BikeListAdapter
 import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.FragmentBicycleRentalBinding
-import com.example.bicycleapp.model.Bike
+import com.example.bicycleapp.viewodel.BasketViewModel
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class BikeRentFragment : Fragment() , BasketUpdate {
 
@@ -23,6 +26,9 @@ class BikeRentFragment : Fragment() , BasketUpdate {
     private lateinit var sharedPreference: SharedPreference
     private lateinit var adapter : BikeListAdapter
     private lateinit var recyclerView : RecyclerView
+    private lateinit var database: DatabaseReference
+    private lateinit var viewModel: BasketViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +45,16 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         }
         callback.isEnabled = true
 
+        database = Firebase.database.reference
         sharedPreference = SharedPreference(view.context)
         recyclerView = binding.bikeRecyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 3)
-        adapter = BikeListAdapter(createActressList(),this)
-        recyclerView.adapter= adapter
+
+        viewModel = BasketViewModel()
+        viewModel.getBikeData().observe(requireActivity()) {
+            adapter = BikeListAdapter(it,this)
+            recyclerView.adapter= adapter
+        }
 
         if (sharedPreference.getTotalFee("ORDER") >= 1)
             showBasket()
@@ -55,47 +66,6 @@ class BikeRentFragment : Fragment() , BasketUpdate {
             Navigation.findNavController(view).navigate(R.id.action_BicycleRentalFragment_to_BasketFragment)
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun createActressList(): ArrayList<Bike> {
-        return arrayListOf(
-            Bike(1,
-                "Bianchi",
-                R.drawable.bicycle_image,
-                15
-            ),
-            Bike(2,
-                "Ümit",
-                R.drawable.bike_1,
-                20
-            ),
-            Bike(3,
-                "Serraro ",
-                R.drawable.bike_2,
-                29
-            ),
-            Bike(4,
-                "Cannondale",
-                R.drawable.bike_3,
-                19
-            ),
-            Bike(5,
-                "Tec",
-                R.drawable.bike_4,
-                20
-            ),
-            Bike(6,
-                "Belderia",
-                R.drawable.bike_5,
-                10
-            ),
-        )
-    }
-
 
     private fun showBasket() {
         binding.basketLayout.visibility = View.VISIBLE

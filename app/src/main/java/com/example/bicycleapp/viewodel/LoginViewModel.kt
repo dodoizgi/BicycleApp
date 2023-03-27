@@ -1,4 +1,4 @@
-package com.example.bicycleapp.fragment
+package com.example.bicycleapp.viewodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
