@@ -54,9 +54,8 @@ class BasketFragment : Fragment() ,BasketUpdate {
         viewModel.getBasketData().observe(requireActivity()) {
             adapter = BasketBikeListAdapter(it, this)
             recyclerView.adapter = adapter
+            binding.basketTotalFee.text = viewModel.getTotalFee(it).value.toString()
         }
-        viewModel.getTotalFee().observe(requireActivity()) {
-            binding.basketTotalFee.text = it.toString() }
     }
 
     private fun dialogYesOrNo() {
@@ -80,13 +79,9 @@ class BasketFragment : Fragment() ,BasketUpdate {
 
     override fun increase(bikeBasketModel : BikeBasketModel) {
         viewModel.addItemBasket(bikeBasketModel).observe(requireActivity()) { getData() }
-        viewModel.getTotalFee().observe(requireActivity()) {
-            binding.basketTotalFee.text = it.toString() }
     }
 
     override fun decrease(bikeBasketModel: BikeBasketModel) {
         viewModel.removeItemBasket(bikeBasketModel).observe(requireActivity()) { getData() }
-        viewModel.getTotalFee().observe(requireActivity()) {
-            binding.basketTotalFee.text = it.toString() }
     }
 }

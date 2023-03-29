@@ -15,6 +15,7 @@ class BasketRepository {
     private var database: DatabaseReference = Firebase.database("https://bikeeapp-basket.firebaseio.com").reference
     private var mutableLiveData = MutableLiveData<ArrayList<BikeBasketModel>>()
     private var bikeArray : ArrayList<BikeBasketModel> = ArrayList()
+    private val mutableLiveDataInt : MutableLiveData<Int> = MutableLiveData()
 
     fun getFirebaseBasketList(): MutableLiveData<ArrayList<BikeBasketModel>> {
         database.addValueEventListener(object : ValueEventListener {
@@ -27,6 +28,7 @@ class BasketRepository {
                     checkAndAdd(bikeBasketModel,bikeArray)
                 }
                 mutableLiveData.value = bikeArray
+                getTotalFee(bikeArray)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -35,28 +37,23 @@ class BasketRepository {
         return mutableLiveData
     }
 
-    fun getTotalFee() : MutableLiveData<Int> {
+    fun getTotalFee(bikeBasketArray: ArrayList<BikeBasketModel>) : MutableLiveData<Int> {
         var totalCount = 0
-        val mutableLiveDataInt : MutableLiveData<Int> = MutableLiveData()
-
-        bikeArray = getFirebaseBasketList().value ?: ArrayList()
-
-        if (bikeArray.isEmpty())
-            return mutableLiveDataInt
-
-        bikeArray.forEach { totalCount += it.bikePrice * it.bikeCount }
+        mutableLiveDataInt.value = 0
+        bikeBasketArray.forEach { totalCount += it.bikePrice * it.bikeCount }
         mutableLiveDataInt.value = totalCount
+
         return mutableLiveDataInt
     }
 
     fun addItemBasket(bikeBasket: BikeBasketModel) {
-        bikeArray = getFirebaseBasketList().value!!
+        bikeArray = getFirebaseBasketList().value ?: ArrayList()
         checkAndAdd(bikeBasket, bikeArray)
         database.setValue(bikeArray)
     }
 
     fun removeItembasket(bikeBasket: BikeBasketModel) {
-        bikeArray = getFirebaseBasketList().value!!
+        bikeArray = getFirebaseBasketList().value ?: ArrayList()
         checkAndRemove(bikeBasket,bikeArray)
         database.setValue(bikeArray)
     }

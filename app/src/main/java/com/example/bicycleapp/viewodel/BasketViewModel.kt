@@ -18,8 +18,8 @@ class BasketViewModel : ViewModel() {
         return getBasketData()
     }
 
-    fun getTotalFee() :MutableLiveData<Int>{
-        return basketRepository.getTotalFee()
+    fun getTotalFee(bikeBasketModel: ArrayList<BikeBasketModel>) :MutableLiveData<Int>{
+        return basketRepository.getTotalFee(bikeBasketModel)
     }
 
     fun addItemBasket(basketModel: BikeBasketModel) :MutableLiveData<ArrayList<BikeBasketModel>>{
