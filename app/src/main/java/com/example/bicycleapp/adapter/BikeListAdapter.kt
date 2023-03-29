@@ -3,7 +3,7 @@ package com.example.bicycleapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bicycleapp.Interface.BasketUpdate
+import com.example.bicycleapp.modelInterface.BasketUpdate
 import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.BicycleItemBinding
 import com.example.bicycleapp.model.Bike
@@ -27,9 +27,8 @@ class BikeListAdapter(private val bikeList : ArrayList<Bike>, private val basket
             binding.bicyclePrice.text = bike.bikePrice.toString()
             binding.bicycleImage.setImageResource(bike.bikeImage)
             binding.plusButton.setOnClickListener {
-                val sharedPreference:SharedPreference=SharedPreference(itemView.context)
-                sharedPreference.addItemBasket("ORDER",BikeBasketModel(bike.id,bike.bikeName,count,bike.bikePrice,bike.bikeImage))
-                basketUpdate.update()
+                val bikeBasketModel = BikeBasketModel(bike.id,bike.bikeName,count,bike.bikePrice,bike.bikeImage)
+                basketUpdate.increase(bikeBasketModel)
             }
         }
     }

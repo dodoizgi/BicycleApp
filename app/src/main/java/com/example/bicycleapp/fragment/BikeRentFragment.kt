@@ -9,12 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bicycleapp.Interface.BasketUpdate
+import com.example.bicycleapp.modelInterface.BasketUpdate
 import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BikeListAdapter
 import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.FragmentBicycleRentalBinding
-import com.example.bicycleapp.viewodel.BasketViewModel
+import com.example.bicycleapp.model.BikeBasketModel
+import com.example.bicycleapp.viewodel.BikeRentViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -27,7 +28,7 @@ class BikeRentFragment : Fragment() , BasketUpdate {
     private lateinit var adapter : BikeListAdapter
     private lateinit var recyclerView : RecyclerView
     private lateinit var database: DatabaseReference
-    private lateinit var viewModel: BasketViewModel
+    private lateinit var viewModel: BikeRentViewModel
 
 
     override fun onCreateView(
@@ -40,9 +41,8 @@ class BikeRentFragment : Fragment() , BasketUpdate {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            // Handle the back button event
-        }
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {}
         callback.isEnabled = true
 
         database = Firebase.database.reference
@@ -50,7 +50,8 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         recyclerView = binding.bikeRecyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 3)
 
-        viewModel = BasketViewModel()
+        viewModel = BikeRentViewModel()
+
         viewModel.getBikeData().observe(requireActivity()) {
             adapter = BikeListAdapter(it,this)
             recyclerView.adapter= adapter
@@ -62,7 +63,6 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         binding.basketFee.text = sharedPreference.getTotalFee("ORDER").toString()
 
         binding.basketLayout.setOnClickListener {
-            sharedPreference.getBasket("ORDER")
             Navigation.findNavController(view).navigate(R.id.action_BicycleRentalFragment_to_BasketFragment)
         }
     }
@@ -71,7 +71,11 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         binding.basketLayout.visibility = View.VISIBLE
     }
 
-    override fun update() {
+    override fun increase(bikeBasketModel: BikeBasketModel) {
+        sharedPreference.addItemBasket("ORDER",bikeBasketModel)
+        database = Firebase.database("https://bikeeapp-basket.firebaseio.com").reference
+        database.child(bikeBasketModel.bikeId.toString()).setValue(bikeBasketModel)
+
         if (binding.basketLayout.visibility == View.GONE)
             showBasket()
 
@@ -80,4 +84,6 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         append("₺")
         }
     }
+
+    override fun decrease(bikeBasketModel: BikeBasketModel) {}
 }

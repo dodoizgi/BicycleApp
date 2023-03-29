@@ -45,15 +45,6 @@ class SharedPreference(context : Context) {
         editor.apply()
     }
 
-    private fun checkAndAdd(bikeBasket: BikeBasketModel) {
-        bikeBasketArray.forEach {
-            if (bikeBasket.bikeId == it.bikeId) {
-                it.bikeCount ++
-                return
-            }
-        }
-        bikeBasketArray.add(bikeBasket)
-    }
 
     fun removeItembasket(KEY_NAME: String, bikeBasket: BikeBasketModel) {
         if (getBasket("ORDER")?.isEmpty() == false) { bikeBasketArray = getBasket("ORDER")!! }
@@ -66,6 +57,16 @@ class SharedPreference(context : Context) {
         val json: String = gson.toJson(bikeBasketArray)
         editor.putString(KEY_NAME, json)
         editor.apply()
+    }
+
+    private fun checkAndAdd(bikeBasket: BikeBasketModel) {
+        bikeBasketArray.forEach {
+            if (bikeBasket.bikeId == it.bikeId) {
+                it.bikeCount ++
+                return
+            }
+        }
+        bikeBasketArray.add(bikeBasket)
     }
 
     private fun checkAndRemove(bikeBasket: BikeBasketModel) {

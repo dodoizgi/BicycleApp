@@ -10,19 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bicycleapp.Interface.BasketUpdate
 import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BasketBikeListAdapter
-import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.FragmentBasketBinding
+import com.example.bicycleapp.model.BikeBasketModel
+import com.example.bicycleapp.modelInterface.BasketUpdate
+import com.example.bicycleapp.viewodel.BasketViewModel
 
 class BasketFragment : Fragment() ,BasketUpdate {
 
     private var _binding: FragmentBasketBinding? = null
     private val binding get() = _binding!!
-    private var sharedPreference : SharedPreference? = null
     private lateinit var adapter : BasketBikeListAdapter
     private lateinit var recyclerView : RecyclerView
+    private lateinit var viewModel: BasketViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
         _binding = FragmentBasketBinding.inflate(inflater, container, false)
@@ -32,21 +33,14 @@ class BasketFragment : Fragment() ,BasketUpdate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            // Handle the back button event
-        }
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {}
         callback.isEnabled = true
 
-        sharedPreference = SharedPreference(view.context)
         recyclerView = binding.basketRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        adapter =
-            BasketBikeListAdapter(sharedPreference!!.getBasket("ORDER"),this)
+        getData()
 
-        recyclerView.adapter= adapter
-
-        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER").toString()
         binding.closeImage.setOnClickListener {
             findNavController().navigate(R.id.action_BasketFragment_to_BicycleRentalFragment)
         }
@@ -55,9 +49,19 @@ class BasketFragment : Fragment() ,BasketUpdate {
         binding.basketRentButton.setOnClickListener { dialogYesOrNo() }
     }
 
+    private fun getData() {
+        viewModel = BasketViewModel()
+        viewModel.getBasketData().observe(requireActivity()) {
+            adapter = BasketBikeListAdapter(it, this)
+            recyclerView.adapter = adapter
+        }
+        viewModel.getTotalFee().observe(requireActivity()) {
+            binding.basketTotalFee.text = it.toString() }
+    }
+
     private fun dialogYesOrNo() {
         val builder = AlertDialog.Builder(activity)
-        builder.setPositiveButton("Yes") { dialog, id ->
+        builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
             deleteBasket()
         }
@@ -68,17 +72,21 @@ class BasketFragment : Fragment() ,BasketUpdate {
     }
 
     private fun deleteBasket() {
-        sharedPreference?.clearBasket()
+        viewModel.deleteBasket().observe(requireActivity()) {
+            getData()
+        }
         binding.basketTotalFee.text = "0"
-        adapter =BasketBikeListAdapter(sharedPreference?.getBasket("ORDER"),this)
-        recyclerView.adapter= adapter
     }
 
-    override fun update() {
-        adapter =
-            BasketBikeListAdapter(sharedPreference!!.getBasket("ORDER"),this)
+    override fun increase(bikeBasketModel : BikeBasketModel) {
+        viewModel.addItemBasket(bikeBasketModel).observe(requireActivity()) { getData() }
+        viewModel.getTotalFee().observe(requireActivity()) {
+            binding.basketTotalFee.text = it.toString() }
+    }
 
-        binding.basketTotalFee.text = sharedPreference!!.getTotalFee("ORDER").toString()
-        recyclerView.adapter= adapter
+    override fun decrease(bikeBasketModel: BikeBasketModel) {
+        viewModel.removeItemBasket(bikeBasketModel).observe(requireActivity()) { getData() }
+        viewModel.getTotalFee().observe(requireActivity()) {
+            binding.basketTotalFee.text = it.toString() }
     }
 }

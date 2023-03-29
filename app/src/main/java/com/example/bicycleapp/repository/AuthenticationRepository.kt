@@ -17,10 +17,6 @@ class AuthenticationRepository(private var application: Application) {
         return firebaseUserMutableLiveData
     }
 
-    fun getUserLoggedMutableLiveData(): MutableLiveData<Boolean?> {
-        return userLoggedMutableLiveData
-    }
-
     fun register(email: String?, pass: String?) {
         auth.createUserWithEmailAndPassword(email!!, pass!!).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -41,8 +37,8 @@ class AuthenticationRepository(private var application: Application) {
         }
     }
 
-    fun signOut() {
+    /*fun signOut() {
         auth.signOut()
         userLoggedMutableLiveData.postValue(true)
-    }
+    }*/
 }
