@@ -14,10 +14,11 @@ import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BasketBikeListAdapter
 import com.example.bicycleapp.databinding.FragmentBasketBinding
 import com.example.bicycleapp.model.BikeBasketModel
-import com.example.bicycleapp.modelInterface.BasketUpdate
+import com.example.bicycleapp.modelInterface.BasketDecrease
+import com.example.bicycleapp.modelInterface.BasketIncrease
 import com.example.bicycleapp.viewodel.BasketViewModel
 
-class BasketFragment : Fragment() ,BasketUpdate {
+class BasketFragment : Fragment() ,BasketIncrease, BasketDecrease {
 
     private var _binding: FragmentBasketBinding? = null
     private val binding get() = _binding!!
@@ -52,7 +53,7 @@ class BasketFragment : Fragment() ,BasketUpdate {
     private fun getData() {
         viewModel = BasketViewModel()
         viewModel.getBasketData().observe(requireActivity()) {
-            adapter = BasketBikeListAdapter(it, this)
+            adapter = BasketBikeListAdapter(it, this,this)
             recyclerView.adapter = adapter
             binding.basketTotalFee.text = viewModel.getTotalFee(it).value.toString()
         }
@@ -71,10 +72,7 @@ class BasketFragment : Fragment() ,BasketUpdate {
     }
 
     private fun deleteBasket() {
-        viewModel.deleteBasket().observe(requireActivity()) {
-            getData()
-        }
-        binding.basketTotalFee.text = "0"
+        viewModel.deleteBasket().observe(requireActivity()) { getData() }
     }
 
     override fun increase(bikeBasketModel : BikeBasketModel) {

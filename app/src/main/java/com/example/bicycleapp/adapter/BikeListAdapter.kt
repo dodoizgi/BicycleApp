@@ -3,13 +3,12 @@ package com.example.bicycleapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bicycleapp.modelInterface.BasketUpdate
-import com.example.bicycleapp.data.SharedPreference
+import com.example.bicycleapp.modelInterface.BasketIncrease
 import com.example.bicycleapp.databinding.BicycleItemBinding
 import com.example.bicycleapp.model.Bike
 import com.example.bicycleapp.model.BikeBasketModel
 
-class BikeListAdapter(private val bikeList : ArrayList<Bike>, private val basketUpdate: BasketUpdate):
+class BikeListAdapter(private val bikeList : ArrayList<Bike>, private val basketIncrease: BasketIncrease):
     RecyclerView.Adapter<BikeListAdapter.ViewHolder>() {
 
     private var count: Int = 1
@@ -28,7 +27,7 @@ class BikeListAdapter(private val bikeList : ArrayList<Bike>, private val basket
             binding.bicycleImage.setImageResource(bike.bikeImage)
             binding.plusButton.setOnClickListener {
                 val bikeBasketModel = BikeBasketModel(bike.id,bike.bikeName,count,bike.bikePrice,bike.bikeImage)
-                basketUpdate.increase(bikeBasketModel)
+                basketIncrease.increase(bikeBasketModel)
             }
         }
     }

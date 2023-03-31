@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bicycleapp.modelInterface.BasketUpdate
+import com.example.bicycleapp.modelInterface.BasketIncrease
 import com.example.bicycleapp.R
 import com.example.bicycleapp.adapter.BikeListAdapter
 import com.example.bicycleapp.data.SharedPreference
@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class BikeRentFragment : Fragment() , BasketUpdate {
+class BikeRentFragment : Fragment() , BasketIncrease {
 
     private var _binding: FragmentBicycleRentalBinding? = null
     private val binding get() = _binding!!
@@ -50,21 +50,28 @@ class BikeRentFragment : Fragment() , BasketUpdate {
         recyclerView = binding.bikeRecyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 3)
 
-        viewModel = BikeRentViewModel()
-
-        viewModel.getBikeData().observe(requireActivity()) {
-            adapter = BikeListAdapter(it,this)
-            recyclerView.adapter= adapter
-        }
-
-        if (sharedPreference.getTotalFee("ORDER") >= 1)
-            showBasket()
-
-        binding.basketFee.text = sharedPreference.getTotalFee("ORDER").toString()
+        getRentData()
 
         binding.basketLayout.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_BicycleRentalFragment_to_BasketFragment)
         }
+    }
+
+    private  fun getRentData() {
+        viewModel = BikeRentViewModel()
+
+        viewModel.getBikeData().observe(requireActivity()) {
+            adapter = BikeListAdapter(it, this)
+            recyclerView.adapter = adapter
+        }
+        viewModel.getTotalFee().observe(requireActivity()) {
+            binding.basketFee.text = buildString {
+                append(it)
+                append("₺")
+            }
+        }
+        if (sharedPreference.getTotalFee("ORDER") >= 1)
+            showBasket()
     }
 
     private fun showBasket() {
@@ -72,18 +79,10 @@ class BikeRentFragment : Fragment() , BasketUpdate {
     }
 
     override fun increase(bikeBasketModel: BikeBasketModel) {
-        sharedPreference.addItemBasket("ORDER",bikeBasketModel)
-        database = Firebase.database("https://bikeeapp-basket.firebaseio.com").reference
-        database.child(bikeBasketModel.bikeId.toString()).setValue(bikeBasketModel)
-
         if (binding.basketLayout.visibility == View.GONE)
             showBasket()
 
-        binding.basketFee.text = buildString {
-        append(sharedPreference.getTotalFee("ORDER"))
-        append("₺")
-        }
+        viewModel.addItemBasket(bikeBasketModel)
+        getRentData()
     }
-
-    override fun decrease(bikeBasketModel: BikeBasketModel) {}
 }

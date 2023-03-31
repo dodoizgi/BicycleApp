@@ -3,12 +3,12 @@ package com.example.bicycleapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bicycleapp.modelInterface.BasketUpdate
-import com.example.bicycleapp.data.SharedPreference
 import com.example.bicycleapp.databinding.BasketItemBinding
 import com.example.bicycleapp.model.BikeBasketModel
+import com.example.bicycleapp.modelInterface.BasketDecrease
+import com.example.bicycleapp.modelInterface.BasketIncrease
 
-class BasketBikeListAdapter(private val bikeBasketList: ArrayList<BikeBasketModel>?, private val basketUpdate: BasketUpdate):
+class BasketBikeListAdapter(private val bikeBasketList: ArrayList<BikeBasketModel>?, private val basketIncrease: BasketIncrease, private val basketDecrease: BasketDecrease):
     RecyclerView.Adapter<BasketBikeListAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: BasketItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -27,12 +27,12 @@ class BasketBikeListAdapter(private val bikeBasketList: ArrayList<BikeBasketMode
 
             basketIncreaseButton.setOnClickListener {
                 if (bikeBasket != null) {
-                    basketUpdate.increase(bikeBasket)
+                    basketIncrease.increase(bikeBasket)
                 }
             }
             basketDecreaseButton.setOnClickListener {
                 if (bikeBasket != null) {
-                    basketUpdate.decrease(bikeBasket)
+                    basketDecrease.decrease(bikeBasket)
                 }
             }
         }

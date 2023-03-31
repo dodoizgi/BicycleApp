@@ -14,21 +14,21 @@ class BasketRepository {
 
     private var database: DatabaseReference = Firebase.database("https://bikeeapp-basket.firebaseio.com").reference
     private var mutableLiveData = MutableLiveData<ArrayList<BikeBasketModel>>()
-    private var bikeArray : ArrayList<BikeBasketModel> = ArrayList()
+    private var bikeBasketArray : ArrayList<BikeBasketModel> = ArrayList()
     private val mutableLiveDataInt : MutableLiveData<Int> = MutableLiveData()
 
     fun getFirebaseBasketList(): MutableLiveData<ArrayList<BikeBasketModel>> {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                bikeArray = ArrayList()
+                bikeBasketArray = ArrayList()
                 for (postSnapshot in dataSnapshot.children) {
                     val gson = Gson()
                     val json: String = postSnapshot.value.toString()
                     val bikeBasketModel : BikeBasketModel = gson.fromJson(json, BikeBasketModel::class.java)
-                    checkAndAdd(bikeBasketModel,bikeArray)
+                    checkAndAdd(bikeBasketModel,bikeBasketArray)
                 }
-                mutableLiveData.value = bikeArray
-                getTotalFee(bikeArray)
+                mutableLiveData.value = bikeBasketArray
+                getTotalFee(bikeBasketArray)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -47,15 +47,15 @@ class BasketRepository {
     }
 
     fun addItemBasket(bikeBasket: BikeBasketModel) {
-        bikeArray = getFirebaseBasketList().value ?: ArrayList()
-        checkAndAdd(bikeBasket, bikeArray)
-        database.setValue(bikeArray)
+        bikeBasketArray = getFirebaseBasketList().value ?: ArrayList()
+        checkAndAdd(bikeBasket, bikeBasketArray)
+        database.setValue(bikeBasketArray)
     }
 
     fun removeItembasket(bikeBasket: BikeBasketModel) {
-        bikeArray = getFirebaseBasketList().value ?: ArrayList()
-        checkAndRemove(bikeBasket,bikeArray)
-        database.setValue(bikeArray)
+        bikeBasketArray = getFirebaseBasketList().value ?: ArrayList()
+        checkAndRemove(bikeBasket,bikeBasketArray)
+        database.setValue(bikeBasketArray)
     }
 
     private fun checkAndAdd(bikeBasket: BikeBasketModel, bikeArrayy: ArrayList<BikeBasketModel>) {
